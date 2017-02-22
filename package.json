@@ -1,0 +1,15 @@
+{
+  "name": "draweverything",
+  "version": "1.0.0",
+  "description": "Draw everything to console",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -S"
+  },
+  "keywords": [
+    "Draw",
+    "console.log"
+  ],
+  "author": "Trịnh Minh Cường",
+  "license": "MIT"
+}

@@ -2,6 +2,11 @@
 
 Vẽ hình bằng console.log.
 
+```
+ node index.js
+
+```
+
 ## Tạo class tên drawClass chứa các hàm vẽ hình bao gồm 
 1. Hàm tổng thể phối hợp các hàm chứ năng
 2. Hàm vẽ từng dòng

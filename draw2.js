@@ -8,8 +8,8 @@
 let rows, cols;
 
 function initDraw() {
-    rows = 15;
-    cols = 15;
+    rows = 8;
+    cols = 8;
 }
 /***
  *
@@ -89,7 +89,13 @@ function drawCornerBox (rowIndex, colIndex, rows, length) {
     // Vẽ bốn góc
     return (((rowIndex === thick - 1 || rowIndex === rows - thick ) && (colIndex <= thick - 1 || colIndex >= length - thick)) || ((colIndex === thick - 1 || colIndex === length - thick ) && (rowIndex <= thick - 1 || rowIndex >= rows - thick)));
 }
+// Hàm vẽ hình cánh bướm
+function drawFly (rowIndex, colIndex, rows, length) {
+    return (rowIndex <= rows/2 && (colIndex<=rowIndex || colIndex >= length - 1 -rowIndex)) ||
+    (rowIndex > rows/2 && (colIndex <= length -1 - rowIndex || colIndex >= rowIndex));
+}
 
+//
 function  drawZigZag (rowIndex, colIndex, rows, length) {
         let lines = 4
         if (colIndex < length/lines) { 
@@ -121,7 +127,7 @@ function drawEverything() {
     initDraw();
 
     for (let i = 0; i < rows; i++) {
-        console.log(drawLine(i, cols, drawDiamondOdd2));
+        console.log(drawLine(i, cols, drawFly));
     }
 }
 

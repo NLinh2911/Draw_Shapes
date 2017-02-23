@@ -38,7 +38,10 @@ exports.drawClass = class {
 
     // Hàm in hình hộp chứa 1 hình hộp bên trong
     drawBox2 (rowIndex, colIndex, rows, length, thick) {
-        return (rowIndex === 0 || rowIndex === rows - 1 || colIndex === 0 || colIndex === length - 1 ||(rowIndex === thick-1 && colIndex >= thick-1 && colIndex <= length-thick) || (rowIndex === rows - thick && colIndex >= thick - 1 && colIndex <= length - thick)||(rowIndex > thick-1 && rowIndex < rows - thick && (colIndex === thick -1 || colIndex === length - thick)) );
+        return (rowIndex === 0 || rowIndex === rows - 1 || colIndex === 0 || colIndex === length - 1 || 
+        (rowIndex === thick-1 && colIndex >= thick-1 && colIndex <= length-thick) || 
+        (rowIndex === rows - thick && colIndex >= thick - 1 && colIndex <= length - thick)||
+        (rowIndex > thick-1 && rowIndex < rows - thick && (colIndex === thick -1 || colIndex === length - thick)));
     }
     // Hàm in đường chéo từ trên xuống dưới
     drawCrossDown(rowIndex, colIndex) {
@@ -75,7 +78,9 @@ exports.drawClass = class {
     // Hàm in hình con thoi khi rows và cols là số lẻ
     drawDiamondOdd (rowIndex, colIndex, rows, length) {
         let dis = (length - 1)/2;
-        return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex)) ||(colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex));
+        return ((colIndex === dis - rowIndex) || (colIndex === dis + rowIndex)) ||
+        (colIndex === dis - (rows - 1 - rowIndex)) || 
+        (colIndex === dis + (rows - 1 - rowIndex));
     }
     // Hàm in hình con thoi khi rows và cols là số lẻ và nằm trong hình box
     drawDiamondBox (rowIndex, colIndex, rows, length) {
@@ -83,7 +88,9 @@ exports.drawClass = class {
         if (rowIndex === 0 || rowIndex === rows-1 || colIndex === 0 || colIndex === length - 1) {
             return true;
         }
-        return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex)) ||(colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex));
+        return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex)) || 
+        (colIndex === dis - (rows - 1 - rowIndex)) || 
+        (colIndex === dis + (rows - 1 - rowIndex));
     }
     // Hàm in 2 hình con thoi lẻ lồng vào nhau, hình nhỏ cách hình to 2 hàng
     drawDiamondOdd2 (rowIndex, colIndex, rows, length, thick) {
@@ -92,10 +99,12 @@ exports.drawClass = class {
             return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex));
         }
         else if (rowIndex <= (rows - 1)/2 && rowIndex >= thick) {
-            return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex) || (colIndex === dis - rowIndex + thick) || (colIndex === dis + rowIndex -thick));
+            return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex) || 
+            (colIndex === dis - rowIndex + thick) || (colIndex === dis + rowIndex -thick));
         }
         else if (rowIndex > (rows - 1)/2 && rowIndex <= (rows-1) - thick) {
-            return ((colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)) || (colIndex === dis - (rows - 1 - rowIndex) + thick )|| (colIndex === dis + (rows - 1 - rowIndex) - thick));
+            return ((colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)) || 
+            (colIndex === dis - (rows - 1 - rowIndex) + thick )|| (colIndex === dis + (rows - 1 - rowIndex) - thick));
         }
         else {
             return ((colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)));
@@ -108,10 +117,18 @@ exports.drawClass = class {
             return true;
         }
         if (rowIndex >= (rows-thick)/2 && rowIndex <= (rows-thick)/2 + (thick-1)) { // vẽ hình vuông nhỏ bên trong size = tham số thick
-            return ((rowIndex === (rows-thick)/2 && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || (rowIndex === (rows-thick)/2 + (thick-1) && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || (colIndex === (length-thick)/2) || (colIndex === (length-thick)/2 +(thick-1)));   
+            return ((rowIndex === (rows-thick)/2 && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || 
+            (rowIndex === (rows-thick)/2 + (thick-1) && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || 
+            (colIndex === (length-thick)/2) || (colIndex === (length-thick)/2 +(thick-1)));   
         }
         // Vẽ bốn góc
-        return (((rowIndex === thick - 1 || rowIndex === rows - thick ) && (colIndex <= thick - 1 || colIndex >= length - thick)) || ((colIndex === thick - 1 || colIndex === length - thick ) && (rowIndex <= thick - 1 || rowIndex >= rows - thick)));
+        return (((rowIndex === thick - 1 || rowIndex === rows - thick ) && (colIndex <= thick - 1 || colIndex >= length - thick)) || 
+            ((colIndex === thick - 1 || colIndex === length - thick ) && (rowIndex <= thick - 1 || rowIndex >= rows - thick)));
+    }
+    // Hàm vẽ hình cánh bướm
+     drawFly (rowIndex, colIndex, rows, length) {
+        return (rowIndex <= rows/2 && (colIndex<=rowIndex || colIndex >= length - 1 -rowIndex)) ||
+            (rowIndex > rows/2 && (colIndex <= length -1 - rowIndex || colIndex >= rowIndex));
     }
     // Hàm vẽ zig zag với 4 đường lên - xuống - lên - xuống 
     // Phải chọn cols = 4*rows để hình cân
@@ -183,6 +200,11 @@ exports.drawClass = class {
             result += (this.drawLine(i, this.cols, this.drawCornerBox));
             result += '\n';
         }
+        result += '\n';
+        for (let i = 0; i < this.rows; i++) {
+            result += (this.drawLine(i, this.cols, this.drawFly));
+            result += '\n';
+        }
         return result;
     }
     // Chạy khi tham số rows và cols là chẵn
@@ -210,6 +232,11 @@ exports.drawClass = class {
         result += '\n';
         for (let i = 0; i < this.rows; i++) {
             result += (this.drawLine(i, this.cols, this.drawDiamondEven));
+            result += '\n';
+        }
+        result += '\n';
+        for (let i = 0; i < this.rows; i++) {
+            result += (this.drawLine(i, this.cols, this.drawFly));
             result += '\n';
         }
         return result;

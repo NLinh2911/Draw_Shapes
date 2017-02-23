@@ -53,13 +53,14 @@ const drawRunner = () => {
 
     try {
         const myDraw = new drawClass(rows, cols, thick);
-        if (cols !== rows*4 && cols !== rows) {
+        // Kiểm tra tham số đầu vào
+        if ((cols !== rows*4 && cols !== rows) || (rows%2 !== 0 && thick%2 ===0) || (rows%2 === 0 && thick%2 !==0)) {
             throw new Error ('Input numbers are not valid. Please follow the instruction and choose again.');
         }
-        if (rows%2 !== 0 && cols === rows) {
+        if (rows%2 !== 0 && cols === rows && thick%2 !==0) {
             log(myDraw.drawEverything()); // với rows, cols số lẻ vẽ 7 hình trừ drawDiamondEven
         }
-        else if (rows%2 === 0 && cols === rows) {
+        else if (rows%2 === 0 && cols === rows && thick%2 === 0) {
             log(myDraw.drawEverything2()); // với rows, cols số chẵn, bỏ qua các hình drawDiamondOdd
         }
         else if (cols === rows*4){

@@ -72,43 +72,36 @@ exports.drawClass = class {
             return (rowIndex === (colIndex + length/2));
         }
     }
-
     // Hàm in hình con thoi khi rows và cols là số lẻ
     drawDiamondOdd (rowIndex, colIndex, rows, length) {
-        if (rowIndex <= (rows - 1)/2){
-            return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex));
-        }
-        else {
-            return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)));
-        }
+        let dis = (length - 1)/2;
+        return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex)) ||(colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex));
     }
     // Hàm in hình con thoi khi rows và cols là số lẻ và nằm trong hình box
     drawDiamondBox (rowIndex, colIndex, rows, length) {
+        let dis = (length - 1)/2;
         if (rowIndex === 0 || rowIndex === rows-1 || colIndex === 0 || colIndex === length - 1) {
             return true;
         }
-        else if (rowIndex <= (rows - 1)/2){
-            return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex));
-        }
-        else if (rowIndex > (rows - 1)/2) {
-            return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)));
-        }
+        return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex)) ||(colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex));
     }
     // Hàm in 2 hình con thoi lẻ lồng vào nhau, hình nhỏ cách hình to 2 hàng
     drawDiamondOdd2 (rowIndex, colIndex, rows, length, thick) {
+        let dis = (length - 1)/2;
         if (rowIndex < thick){
-            return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex));
+            return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex));
         }
         else if (rowIndex <= (rows - 1)/2 && rowIndex >= thick) {
-            return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex) || (colIndex === (length-1)/2 - rowIndex + thick) || (colIndex === (length-1)/2 + rowIndex -thick));
+            return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex) || (colIndex === dis - rowIndex + thick) || (colIndex === dis + rowIndex -thick));
         }
         else if (rowIndex > (rows - 1)/2 && rowIndex <= (rows-1) - thick) {
-            return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)) || (colIndex === (length-1)/2 - (rows - 1 - rowIndex) + thick )|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex) - thick));
+            return ((colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)) || (colIndex === dis - (rows - 1 - rowIndex) + thick )|| (colIndex === dis + (rows - 1 - rowIndex) - thick));
         }
         else {
-            return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)));
+            return ((colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)));
         }
     }
+    
     // Hàm vẽ hình box có chứa 1 box nhỏ ở trung tâm và 4 box ở 4 góc 
     drawCornerBox (rowIndex, colIndex, rows, length, thick) {
         if (rowIndex === 0 || rowIndex === rows-1 || colIndex === 0 || colIndex === length - 1) { // Vẽ hình vuông bọc bên ngoài
@@ -124,17 +117,18 @@ exports.drawClass = class {
     // Phải chọn cols = 4*rows để hình cân
     drawZigZag (rowIndex, colIndex, rows, length) {
         let lines = 4
-        if (colIndex < length/lines) { 
-            return (rowIndex === (length/lines - (colIndex + 1)));
+        // (length/lines) = rows
+        if (colIndex < rows) { 
+            return (rowIndex === (rows - (colIndex + 1)));
         }
-        else if (colIndex >= length/lines && colIndex < (length/lines)*2) { 
-            return (rowIndex === colIndex - (length/lines));
+        else if (colIndex >= rows && colIndex < rows*2) { 
+            return (rowIndex === colIndex - rows);
         }
-        else if (colIndex >= (length/lines)*2 && colIndex < (length/lines)*3) { 
-            return (rowIndex === (length/lines)*3 - (colIndex + 1));
+        else if (colIndex >= rows*2 && colIndex < rows*3) { 
+            return (rowIndex === rows*3 - (colIndex + 1));
         }
         else { 
-            return (rowIndex === colIndex - (length/lines)*3);
+            return (rowIndex === colIndex - rows*3);
         }
     }
     // Hàm vẽ từng dòng

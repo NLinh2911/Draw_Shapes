@@ -8,8 +8,8 @@
 let rows, cols;
 
 function initDraw() {
-    rows = 5;
-    cols = 24;
+    rows = 15;
+    cols = 15;
 }
 /***
  *
@@ -62,22 +62,22 @@ function drawDiamond (rowIndex, colIndex, rows, length) {
     }
 
 }
-function drawDiamondOdd2 (rowIndex, colIndex, rows, length) {
-    let innerDis = 6;
-     if (rowIndex < innerDis){
-        return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex));
+function   drawDiamondOdd2 (rowIndex, colIndex, rows, length) {
+    let thick = 3;
+    let dis = (length-1)/2;
+        if (rowIndex < thick){
+            return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex));
+        }
+        else if ( rowIndex >= thick && rowIndex <= (rows-1) - thick) {
+            return ((colIndex === dis - rowIndex)|| (colIndex === dis + rowIndex) || (colIndex === dis - rowIndex + thick) || (colIndex === dis + rowIndex -thick)|| (colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)) || (colIndex === dis - (rows - 1 - rowIndex) + thick )|| (colIndex === dis + (rows - 1 - rowIndex) - thick));
+        }
+        else {
+            return ((colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)));
+        }
     }
-    else if (rowIndex <= (rows - 1)/2 && rowIndex >= innerDis) {
-        return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex) || (colIndex === (length-1)/2 - rowIndex + innerDis) || (colIndex === (length-1)/2 + rowIndex -innerDis));
-    }
-    else if (rowIndex > (rows - 1)/2 && rowIndex <= (rows-1) - innerDis) {
-        return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)) || (colIndex === (length-1)/2 - (rows - 1 - rowIndex) + innerDis )|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex) - innerDis));
-    }
-    else {
-        return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)));
-    }
-}
-
+ function  drawDiamondOdd (rowIndex, colIndex, rows, length) {
+            return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex)) ||(colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex));
+        }
 function drawCornerBox (rowIndex, colIndex, rows, length) {
     let thick = 11;
     if (rowIndex === 0 || rowIndex === rows-1 || colIndex === 0 || colIndex === length - 1) { // Vẽ hình vuông bọc bên ngoài
@@ -121,7 +121,7 @@ function drawEverything() {
     initDraw();
 
     for (let i = 0; i < rows; i++) {
-        console.log(drawLine(i, cols, drawZigZag));
+        console.log(drawLine(i, cols, drawDiamondOdd2));
     }
 }
 

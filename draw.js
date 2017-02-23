@@ -8,8 +8,8 @@
 let rows, cols;
 
 function initDraw() {
-  rows = 13;
-  cols = 13;
+  rows = 12;
+  cols = 12;
 }
 /***
  *
@@ -53,20 +53,35 @@ function drawX (rowIndex, colIndex, length){
   return (rowIndex === colIndex) || (rowIndex === length - (colIndex + 1));
 }
 // drawDiamond only applies for even rows and cols
-function drawDiamondEven (rowIndex, colIndex, rows, length) {
+function drawDiamondEven2 (rowIndex, colIndex, rows, length) {
     if (rowIndex < rows/2 && colIndex < length/2) { // cạnh trên bên trái
-        return (rowIndex === (length/2 - (colIndex + 1)));
+        return (rowIndex === (length/2 - (colIndex + 1)) || rowIndex === (length/2 - (colIndex + 1) + 2));
     }
     else if (rowIndex < rows/2 && colIndex >= length/2) { // cạnh trên bên phải
-        return (rowIndex === (colIndex - length/2));
+        return (rowIndex === (colIndex - length/2) || rowIndex === (colIndex - length/2) - 2);
     }
     else if (rowIndex >= rows/2 && colIndex >= length/2) { // cạnh dưới bên phải
-        return (rowIndex === length - (colIndex - length/2 + 1));
+        return (rowIndex === length - (colIndex - length/2 + 1) || rowIndex === length - (colIndex - length/2 + 1) - 2);
     }
     else { // cạnh dưới bên trái
-        return (rowIndex === (colIndex + length/2));
+        return (rowIndex === (colIndex + length/2) || rowIndex === (colIndex + length/2) + 2);
     }
 }
+function drawDiamondEven (rowIndex, colIndex, rows, length) {
+        if (rowIndex < rows/2 && colIndex < length/2) { // cạnh trên bên trái
+            return (rowIndex === (length/2 - (colIndex + 1)));
+        }
+        else if (rowIndex < rows/2 && colIndex >= length/2) { // cạnh trên bên phải
+            return (rowIndex === (colIndex - length/2));
+        }
+        else if (rowIndex >= rows/2 && colIndex >= length/2) { // cạnh dưới bên phải
+            return (rowIndex === length - (colIndex - length/2 + 1));
+        }
+        else { // cạnh dưới bên trái
+            return (rowIndex === (colIndex + length/2));
+        }
+    }
+
 // drawDiamondOdd only applies for odd rows and cols
 function drawDiamondOdd (rowIndex, colIndex, rows, length) {
     if (rowIndex <= (rows - 1)/2){
@@ -93,7 +108,7 @@ function drawEverything() {
   initDraw();
 
   for (let i = 0; i < rows; i++) {
-    console.log(drawLine(i, cols, drawDiamondOdd));
+    console.log(drawLine(i, cols, drawDiamondEven));
   }
 }
 

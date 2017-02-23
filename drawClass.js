@@ -14,7 +14,6 @@ exports.drawClass = class {
         this.thick = thick;
         this.shape = shape;
     }
-
     /***
      * @param row {Number}
      * @param col {Number}
@@ -96,18 +95,46 @@ exports.drawClass = class {
         }
     }
     // Hàm in 2 hình con thoi lẻ lồng vào nhau, hình nhỏ cách hình to 2 hàng
-    drawDiamondOdd2 (rowIndex, colIndex, rows, length) {
-        if (rowIndex < 3){
+    drawDiamondOdd2 (rowIndex, colIndex, rows, length, thick) {
+        if (rowIndex < thick){
             return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex));
         }
-        else if (rowIndex <= (rows - 1)/2 && rowIndex >= 3) {
-            return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex) || (colIndex === (length-1)/2 - rowIndex + 3) || (colIndex === (length-1)/2 + rowIndex -3));
+        else if (rowIndex <= (rows - 1)/2 && rowIndex >= thick) {
+            return ((colIndex === (length-1)/2 - rowIndex)|| (colIndex === (length-1)/2 + rowIndex) || (colIndex === (length-1)/2 - rowIndex + thick) || (colIndex === (length-1)/2 + rowIndex -thick));
         }
-        else if (rowIndex > (rows - 1)/2 && rowIndex <= (rows-1) - 3) {
-            return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)) || (colIndex === (length-1)/2 - (rows - 1 - rowIndex) + 3 )|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex) - 3));
+        else if (rowIndex > (rows - 1)/2 && rowIndex <= (rows-1) - thick) {
+            return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)) || (colIndex === (length-1)/2 - (rows - 1 - rowIndex) + thick )|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex) - thick));
         }
         else {
             return ((colIndex === (length-1)/2 - (rows - 1 - rowIndex))|| (colIndex === (length-1)/2 + (rows - 1 - rowIndex)));
+        }
+    }
+    // Hàm vẽ hình box có chứa 1 box nhỏ ở trung tâm và 4 box ở 4 góc 
+    drawCornerBox (rowIndex, colIndex, rows, length, thick) {
+        if (rowIndex === 0 || rowIndex === rows-1 || colIndex === 0 || colIndex === length - 1) { // Vẽ hình vuông bọc bên ngoài
+            return true;
+        }
+        if (rowIndex >= (rows-thick)/2 && rowIndex <= (rows-thick)/2 + (thick-1)) { // vẽ hình vuông nhỏ bên trong size = tham số thick
+            return ((rowIndex === (rows-thick)/2 && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || (rowIndex === (rows-thick)/2 + (thick-1) && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || (colIndex === (length-thick)/2) || (colIndex === (length-thick)/2 +(thick-1)));   
+        }
+        // Vẽ bốn góc
+        return (((rowIndex === thick - 1 || rowIndex === rows - thick ) && (colIndex <= thick - 1 || colIndex >= length - thick)) || ((colIndex === thick - 1 || colIndex === length - thick ) && (rowIndex <= thick - 1 || rowIndex >= rows - thick)));
+    }
+    // Hàm vẽ zig zag với 4 đường lên - xuống - lên - xuống 
+    // Phải chọn cols = 4*rows để hình cân
+    drawZigZag (rowIndex, colIndex, rows, length) {
+        let lines = 4
+        if (colIndex < length/lines) { 
+            return (rowIndex === (length/lines - (colIndex + 1)));
+        }
+        else if (colIndex >= length/lines && colIndex < (length/lines)*2) { 
+            return (rowIndex === colIndex - (length/lines));
+        }
+        else if (colIndex >= (length/lines)*2 && colIndex < (length/lines)*3) { 
+            return (rowIndex === (length/lines)*3 - (colIndex + 1));
+        }
+        else { 
+            return (rowIndex === colIndex - (length/lines)*3);
         }
     }
     // Hàm vẽ từng dòng
@@ -118,8 +145,9 @@ exports.drawClass = class {
         }
         return str;
     }
+
     // Hàm tổng hợp loop qua tất cả các dòng
-    // In tất cả 7 hình
+    // In tất cả 8 hình, chạy khi tham số rows and cols là lẻ
     drawEverything () {
         let result ='';
         for (let i = 0; i < this.rows; i++) {
@@ -156,9 +184,14 @@ exports.drawClass = class {
             result += (this.drawLine(i, this.cols, this.drawDiamondOdd2));
             result += '\n';
         }
+        result += '\n';
+        for (let i = 0; i < this.rows; i++) {
+            result += (this.drawLine(i, this.cols, this.drawCornerBox));
+            result += '\n';
+        }
         return result;
     }
-
+    // Chạy khi tham số rows và cols là chẵn
     drawEverything2 () {
         let result ='';
         for (let i = 0; i < this.rows; i++) {
@@ -183,6 +216,15 @@ exports.drawClass = class {
         result += '\n';
         for (let i = 0; i < this.rows; i++) {
             result += (this.drawLine(i, this.cols, this.drawDiamondEven));
+            result += '\n';
+        }
+        return result;
+    }
+    // Chạy khi in hình zig zag
+    drawEverything3 () {
+        let result ='';
+        for (let i = 0; i < this.rows; i++) {
+            result += (this.drawLine(i, this.cols, this.drawZigZag));
             result += '\n';
         }
         return result;

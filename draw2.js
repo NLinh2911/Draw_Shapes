@@ -8,8 +8,8 @@
 let rows, cols;
 
 function initDraw() {
-    rows = 8;
-    cols = 8;
+    rows = 13;
+    cols = 13;
 }
 /***
  *
@@ -97,19 +97,20 @@ function drawFly (rowIndex, colIndex, rows, length) {
 
 //
 function  drawZigZag (rowIndex, colIndex, rows, length) {
-        let lines = 4
-        if (colIndex < length/lines) { 
-            return (rowIndex === (length/lines - (colIndex + 1)));
+        let lines = 5;
+        //(length/lines) = rows
+        if (colIndex < rows) { 
+            return (rowIndex === (rows - (colIndex + 1)));
         }
-        else if (colIndex >= length/lines && colIndex < (length/lines)*2) { 
-            return (rowIndex === colIndex - (length/lines));
+        else if (colIndex >= rows && colIndex < rows*2) { 
+            return (rowIndex === colIndex - rows);
         }
-        else if (colIndex >= (length/lines)*2 && colIndex < (length/lines)*3) { 
-            return (rowIndex === (length/lines)*3 - (colIndex + 1));
+        else if (colIndex >= rows*2 && colIndex < rows*3) { 
+            return (rowIndex === rows*3 - (colIndex + 1));
         }
         else { 
-            return (rowIndex === colIndex - (length/lines)*3);
-        }
+            return (rowIndex === colIndex - rows*3);
+        }       
     }
 function drawLine(rowIndex, cols, drawFunction) {
     let str = "";
@@ -127,7 +128,7 @@ function drawEverything() {
     initDraw();
 
     for (let i = 0; i < rows; i++) {
-        console.log(drawLine(i, cols, drawFly));
+        console.log(drawLine(i, cols, drawDiamondOdd2));
     }
 }
 

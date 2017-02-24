@@ -107,33 +107,36 @@ exports.drawClass = class {
             (colIndex === dis - (rows - 1 - rowIndex) + thick )|| (colIndex === dis + (rows - 1 - rowIndex) - thick));
         }
         else {
-            return ((colIndex === dis - (rows - 1 - rowIndex))|| (colIndex === dis + (rows - 1 - rowIndex)));
+            return ((colIndex === dis - (rows - 1 - rowIndex)) || (colIndex === dis + (rows - 1 - rowIndex)));
         }
     }
     
     // Hàm vẽ hình box có chứa 1 box nhỏ ở trung tâm và 4 box ở 4 góc 
     drawCornerBox (rowIndex, colIndex, rows, length, thick) {
+        let temp = (length - thick)/2;
+
         if (rowIndex === 0 || rowIndex === rows-1 || colIndex === 0 || colIndex === length - 1) { // Vẽ hình vuông bọc bên ngoài
             return true;
         }
-        if (rowIndex >= (rows-thick)/2 && rowIndex <= (rows-thick)/2 + (thick-1)) { // vẽ hình vuông nhỏ bên trong size = tham số thick
-            return ((rowIndex === (rows-thick)/2 && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || 
-            (rowIndex === (rows-thick)/2 + (thick-1) && colIndex >= (length-thick)/2 && colIndex <= (length-thick)/2 + (thick-1)) || 
-            (colIndex === (length-thick)/2) || (colIndex === (length-thick)/2 +(thick-1)));   
+        if (rowIndex >= temp && rowIndex <= temp + (thick-1)) { // vẽ hình vuông nhỏ bên trong size = tham số thick
+            return ((rowIndex === temp && colIndex >= temp && colIndex <= temp + (thick-1)) || 
+            (rowIndex === temp + (thick-1) && colIndex >= temp && colIndex <= temp + (thick-1)) || 
+            (colIndex === temp) || (colIndex === temp +(thick-1)));   
         }
         // Vẽ bốn góc
-        return (((rowIndex === thick - 1 || rowIndex === rows - thick ) && (colIndex <= thick - 1 || colIndex >= length - thick)) || 
-            ((colIndex === thick - 1 || colIndex === length - thick ) && (rowIndex <= thick - 1 || rowIndex >= rows - thick)));
+        return (((rowIndex === thick - 1 || rowIndex === rows - thick ) && (colIndex <= thick - 1 || colIndex >= length - thick)) 
+        || ((colIndex === thick - 1 || colIndex === length - thick ) && (rowIndex <= thick - 1 || rowIndex >= rows - thick)));
     }
     // Hàm vẽ hình cánh bướm
      drawFly (rowIndex, colIndex, rows, length) {
-        return (rowIndex <= rows/2 && (colIndex<=rowIndex || colIndex >= length - 1 -rowIndex)) ||
-            (rowIndex > rows/2 && (colIndex <= length -1 - rowIndex || colIndex >= rowIndex));
+        return (rowIndex <= rows/2 && (colIndex<=rowIndex || colIndex >= length - 1 - rowIndex)) ||
+            (rowIndex > rows/2 && (colIndex <= length - 1 - rowIndex || colIndex >= rowIndex));
     }
     // Hàm vẽ zig zag với 4 đường lên - xuống - lên - xuống 
     // Phải chọn cols = 4*rows để hình cân
     drawZigZag (rowIndex, colIndex, rows, length) {
         let lines = 4
+        length = lines * rows;
         // (length/lines) = rows
         if (colIndex < rows) { 
             return (rowIndex === (rows - (colIndex + 1)));
@@ -205,6 +208,11 @@ exports.drawClass = class {
             result += (this.drawLine(i, this.cols, this.drawFly));
             result += '\n';
         }
+        result += '\n';
+        for (let i = 0; i < this.rows; i++) {
+            result += (this.drawLine(i, this.rows*4, this.drawZigZag));
+            result += '\n';
+        }
         return result;
     }
     // Chạy khi tham số rows và cols là chẵn
@@ -237,15 +245,6 @@ exports.drawClass = class {
         result += '\n';
         for (let i = 0; i < this.rows; i++) {
             result += (this.drawLine(i, this.cols, this.drawFly));
-            result += '\n';
-        }
-        return result;
-    }
-    // Chạy khi in hình zig zag
-    drawEverything3 () {
-        let result ='';
-        for (let i = 0; i < this.rows; i++) {
-            result += (this.drawLine(i, this.cols, this.drawZigZag));
             result += '\n';
         }
         return result;

@@ -17,10 +17,9 @@ Vẽ hình bằng console.log.
 2. Kiểm tra đầu vào người dùng nhập có phải là số nguyên dương hợp lệ không
 3. In ra kết quả vẽ hình trên terminal
 
-## Có 3 trường hợp in hình tùy thuộc vào tham số đầu vào
-1. Với rows, cols số lẻ chạy drawEverything() vẽ 9 hình trừ drawDiamondEven và drawZigZag
+## Có 2 trường hợp in hình tùy thuộc vào tham số đầu vào
+1. Với rows, cols số lẻ chạy drawEverything() vẽ 10 hình trừ drawDiamondEven
 2. Với rows, cols số chẵn chạy drawEverything2() vẽ 6 hình bỏ qua drawDiamondOdd, drawDiamondBox, drawDiamondOdd2, drawCornerBox và drawZigZag
-3. Để vẽ hình zig zag, chọn tham số sao cho cols = 4*rows để hình cân, chạy drawEverything3()
 
 ## Các hàm vẽ hình mới gồm:
 1. drawBox2: Hàm in hình hộp chứa 1 hình hộp bên trong
@@ -33,4 +32,4 @@ Vẽ hình bằng console.log.
 8. drawDiamondOdd2: Hàm in 2 hình con thoi lồng vào nhau, hình nhỏ cách hình to 1 khoảng cách = tham số thick
 9. drawCornerBox: Hàm vẽ hình box có chứa 1 box nhỏ ở trung tâm và 4 box ở 4 góc
 10. drawFly: Hàm vẽ hình cánh bướm - 2 hình tam giác chụm vào nhau
-11. drawZigZag: Hàm vẽ zig zag với 4 đường cân lên - xuống - lên - xuống. Phải chọn cols = 4*rows để hình cân
+11. drawZigZag: Hàm vẽ zig zag với 4 đường cân lên - xuống - lên - xuống
